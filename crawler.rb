@@ -19,17 +19,19 @@ def print_link(dash_count, link)
   puts dashes + link
 end
 
+def page_links(browser)
+  browser.all('a').map { |a| a[:href] }
+end
+
 parent = 'http://www.hardscrabble.net'
 browser.visit parent
 print_link(1, parent)
-links = browser.all('a').map { |a| a[:href] }
-links.each do |link|
+page_links(browser).each do |link|
   next unless link.include? parent
-  puts "--#{link}"
+  print_link(2, link)
   browser.visit link
-  sub_links = browser.all('a').map { |a| a[:href] }
-  sub_links.each do |sub_link|
+  page_links(browser).each do |sub_link|
     next unless sub_link.include? parent
-    puts "---#{sub_link}"
+    print_link(3, sub_link)
   end
 end
