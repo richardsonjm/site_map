@@ -14,9 +14,14 @@ Capybara.default_driver = :poltergeist
 browser = Capybara.current_session
 # include Capybara::DSL
 
+def print_link(dash_count, link)
+  dashes = '-'* dash_count
+  puts dashes + link
+end
+
 parent = 'http://www.hardscrabble.net'
 browser.visit parent
-puts "-#{browser.current_url}"
+print_link(1, parent)
 links = browser.all('a').map { |a| a[:href] }
 links.each do |link|
   next unless link.include? parent
