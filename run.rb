@@ -1,4 +1,5 @@
 require_relative 'lib/crawler.rb'
 
-crawler = Crawler.new
-crawler.build_map('http://www.hardscrabble.net')
+home_page = 'http://www.hardscrabble.net'
+crawler = Crawler.new(home_page)
+crawler.build_map(home_page, 1)

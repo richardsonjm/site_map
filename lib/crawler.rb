@@ -1,11 +1,14 @@
 require_relative '../environment.rb'
 
 class Crawler
-  def initialize
+  def initialize(home_page)
+    @home_page = home_page
+    print_link(home_page, 1)
     @browser = Capybara.current_session
+    @visited_links = []
   end
 
-  def print_link(dash_count, link)
+  def print_link(link, dash_count)
     dashes = '-'* dash_count
     puts dashes + link
   end
@@ -14,17 +17,15 @@ class Crawler
     @browser.all('a').map { |a| a[:href] }
   end
 
-  def build_map(parent)
-    @browser.visit parent
-    print_link(1, parent)
+  def build_map(link, dash_count)
+    @browser.visit link
+    @visited_links << link
+    dash_count += 1
     page_links.each do |link|
-      next unless link.include? parent
-      print_link(2, link)
-      @browser.visit link
-      page_links.each do |sub_link|
-        next unless sub_link.include? parent
-        print_link(3, sub_link)
-      end
+      next unless link.include? @home_page
+      print_link(link, dash_count)
+      next if @visited_links.include? link
+      build_map(link, dash_count)
     end
   end
 end
