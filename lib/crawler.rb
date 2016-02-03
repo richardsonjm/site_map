@@ -3,7 +3,6 @@ require_relative '../environment.rb'
 class Crawler
   def initialize(home_page)
     @home_page = home_page
-    print_link(home_page, 1)
     @browser = Capybara.current_session
     @visited_links = []
   end
@@ -18,6 +17,7 @@ class Crawler
   end
 
   def build_map(link, dash_count)
+    print_link(link, dash_count) if link == @home_page
     @browser.visit link
     @visited_links << link
     dash_count += 1
