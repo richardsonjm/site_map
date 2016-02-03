@@ -16,11 +16,15 @@ class Crawler
     @browser.all('a').map { |a| a[:href] }
   end
 
+  def visit_link(link)
+    @browser.visit link
+    @visited_links << link
+  end
+
   def build_map(dash_count, link=@home_page)
     # print home_page link only on first pass
     print_link(dash_count, link) if link == @home_page
-    @browser.visit link
-    @visited_links << link
+    visit_link(link)
     dash_count += 1
     page_links.each do |link|
       # only print links within the home_page domain
