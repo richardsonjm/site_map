@@ -16,7 +16,7 @@ class Crawler
     @browser.all('a').map { |a| a[:href] }
   end
 
-  def build_map(link, dash_count)
+  def build_map(dash_count, link=@home_page)
     # print home_page link only on first pass
     print_link(link, dash_count) if link == @home_page
     @browser.visit link
@@ -28,7 +28,7 @@ class Crawler
       print_link(link, dash_count)
       # only visit links if they have not been visited before
       next if @visited_links.include? link
-      build_map(link, dash_count)
+      build_map(dash_count, link)
     end
   end
 end
